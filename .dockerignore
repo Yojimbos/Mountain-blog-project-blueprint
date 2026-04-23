@@ -1,0 +1,16 @@
+node_modules
+.next
+out
+dist
+.git
+.agents
+.claude
+AGENTS.md
+skills-lock.json
+coverage
+*.log
+.env
+.env.local
+.env.*.local
+tsconfig.tsbuildinfo
+

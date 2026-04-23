@@ -1,0 +1,13 @@
+node_modules
+.next
+out
+dist
+.DS_Store
+coverage
+*.log
+.env
+.env.local
+.env.*.local
+.agents/
+skills-lock.json
+AGENTS.md
