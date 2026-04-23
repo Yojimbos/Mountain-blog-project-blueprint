@@ -1,0 +1,28 @@
+---
+- name: Bootstrap FluxCD for GitHub
+  hosts: ops
+  become: false
+  vars:
+    github_owner: "CHANGE_ME"
+    github_repository: "Mountain-blog-project-blueprint"
+    github_branch: "main"
+    flux_cluster_path: "k8s/clusters/dev"
+  tasks:
+    - name: Ensure required env vars are present
+      ansible.builtin.assert:
+        that:
+          - lookup('ansible.builtin.env', 'GITHUB_TOKEN') | length > 0
+        fail_msg: "Set GITHUB_TOKEN before running this playbook."
+
+    - name: Bootstrap Flux against GitHub
+      ansible.builtin.shell: |
+        set -euo pipefail
+        flux bootstrap github \
+          --token-auth \
+          --owner="{{ github_owner }}" \
+          --repository="{{ github_repository }}" \
+          --branch="{{ github_branch }}" \
+          --path="{{ flux_cluster_path }}"
+      args:
+        executable: /bin/bash
+

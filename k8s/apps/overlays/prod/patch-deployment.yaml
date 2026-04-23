@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mountain-blog
+  namespace: app
+spec:
+  replicas: 2
+  template:
+    spec:
+      containers:
+        - name: mountain-blog
+          image: ghcr.io/example/mountain-blog-project-blueprint:main
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: PORT
+              value: "3000"
+            - name: NEXT_PUBLIC_SITE_URL
+              value: https://mountain-blog.example.com
+

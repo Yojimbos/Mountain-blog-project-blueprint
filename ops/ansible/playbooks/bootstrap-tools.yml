@@ -1,0 +1,48 @@
+---
+- name: Bootstrap operator tooling
+  hosts: ops
+  become: true
+  vars:
+    packages:
+      - curl
+      - unzip
+      - git
+      - jq
+  tasks:
+    - name: Install base packages
+      ansible.builtin.apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: true
+
+    - name: Install kubectl
+      ansible.builtin.shell: |
+        set -euo pipefail
+        curl -fsSL https://dl.k8s.io/release/$(curl -fsSL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl
+        chmod +x /usr/local/bin/kubectl
+      args:
+        executable: /bin/bash
+
+    - name: Install Helm
+      ansible.builtin.shell: |
+        set -euo pipefail
+        curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+      args:
+        executable: /bin/bash
+
+    - name: Install Flux CLI
+      ansible.builtin.shell: |
+        set -euo pipefail
+        curl -fsSL https://fluxcd.io/install.sh | bash
+        install -m 0755 "$HOME/.local/bin/flux" /usr/local/bin/flux
+      args:
+        executable: /bin/bash
+      become: false
+
+    - name: Install Azure CLI
+      ansible.builtin.shell: |
+        set -euo pipefail
+        curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+      args:
+        executable: /bin/bash
+

@@ -1,0 +1,5 @@
+resource_group_name  = "rg-tfstate-shared"
+storage_account_name = "tfstatemountainblog"
+container_name       = "tfstate"
+key                  = "mountain-blog/dev.tfstate"
+

@@ -1,0 +1,48 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+  namespace: observability
+spec:
+  dependsOn:
+    - name: ingress-nginx
+      namespace: ingress-nginx
+  interval: 30m
+  chart:
+    spec:
+      chart: kube-prometheus-stack
+      version: "82.x"
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+        namespace: flux-system
+      interval: 12h
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  values:
+    grafana:
+      adminPassword: "change-me-in-production"
+      defaultDashboardsTimezone: "browser"
+      ingress:
+        enabled: false
+      additionalDataSources:
+        - name: Loki
+          type: loki
+          access: proxy
+          url: http://loki-gateway.observability.svc.cluster.local
+          isDefault: false
+    prometheus:
+      prometheusSpec:
+        serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelectorNilUsesHelmValues: false
+        retention: 10d
+        scrapeInterval: 30s
+    alertmanager:
+      enabled: true
+

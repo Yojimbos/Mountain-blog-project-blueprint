@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: mountain-blog
+  namespace: app
+  labels:
+    app.kubernetes.io/name: mountain-blog
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mountain-blog
+  endpoints:
+    - port: http
+      path: /api/metrics
+      interval: 30s
+  namespaceSelector:
+    matchNames:
+      - app
+

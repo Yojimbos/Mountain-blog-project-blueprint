@@ -1,0 +1,67 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: k8s-alloy-logs
+  namespace: observability
+spec:
+  dependsOn:
+    - name: loki
+      namespace: observability
+  interval: 30m
+  chart:
+    spec:
+      chart: k8s-monitoring
+      version: "2.x"
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+      interval: 12h
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    cluster:
+      name: mountain-blog
+    destinations:
+      - name: loki
+        type: loki
+        url: http://loki-gateway.observability.svc.cluster.local/loki/api/v1/push
+    clusterEvents:
+      enabled: true
+      collector: alloy-logs
+      namespaces:
+        - observability
+        - app
+        - ingress-nginx
+    nodeLogs:
+      enabled: false
+    podLogs:
+      enabled: true
+      gatherMethod: kubernetesApi
+      collector: alloy-logs
+      labelsToKeep:
+        - app_kubernetes_io_name
+        - container
+        - instance
+        - job
+        - namespace
+        - service_name
+        - service_namespace
+      namespaces:
+        - observability
+        - app
+        - ingress-nginx
+    alloy-singleton:
+      enabled: false
+    alloy-metrics:
+      enabled: false
+    alloy-logs:
+      enabled: true
+      alloy:
+        clustering:
+          enabled: true
+
