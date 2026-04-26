@@ -3,6 +3,8 @@ import type { MetadataRoute } from "next";
 import { getEquipmentGuides, getPosts, getRoutes } from "@/lib/content";
 import { siteConfig } from "@/lib/site-config";
 
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = ["", "/about", "/routes", "/equipment", "/safety", "/blog", "/contact"];
   const postPages = getPosts().map((post) => `/blog/${post.slug}`);
@@ -14,4 +16,3 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
   }));
 }
-

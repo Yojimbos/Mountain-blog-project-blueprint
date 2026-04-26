@@ -22,6 +22,13 @@ npm run dev
 - `NEXT_PUBLIC_SITE_URL` sets the canonical site origin for metadata, Open Graph, `robots.txt`, and `sitemap.xml`
 - if not set, the project falls back to `http://localhost:3000`
 
+## Deployment automation
+
+- `CI` runs lint, typecheck, build, and a static export smoke test on pushes and pull requests
+- `Release Dev` is designed to create or update the Azure `dev` infrastructure with Terraform and then deploy the static site to Azure Static Web Apps
+- the release workflow expects GitHub Actions secrets `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_SUBSCRIPTION_ID`
+- the Terraform backend values are already fixed in the workflow for this repository, so no extra GitHub repository variables are required for the `dev` release path
+
 ## Project structure
 
 - `src/app` application routes

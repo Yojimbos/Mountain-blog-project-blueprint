@@ -2,12 +2,16 @@
   "name": "mountain-blog-project-blueprint",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:smoke": "node ./scripts/verify-static-output.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -15,7 +19,6 @@
     "js-yaml": "^3.14.2",
     "lucide-react": "^1.8.0",
     "next": "^16.2.4",
-    "prom-client": "^15.1.3",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-markdown": "^10.1.0",

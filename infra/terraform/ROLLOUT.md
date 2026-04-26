@@ -5,13 +5,13 @@
 This rollout covers the first Azure foundation for the project:
 
 - Resource Group
-- Log Analytics Workspace
-- Application Insights
 - Static Web App
+
+The goal is a cheap, reliable, and secure hosting baseline for a content-first website.
 
 ## Risk level
 
-Low to medium.
+Low.
 
 The rollout creates new resources and does not migrate production data. The main risks are naming collisions, Azure permissions, region availability, and applying the wrong environment file.
 
@@ -29,8 +29,7 @@ The rollout creates new resources and does not migrate production data. The main
 1. Confirm the target subscription and tenant.
 2. Confirm the target environment file.
 3. Confirm naming conventions and tags.
-4. Confirm `NEXT_PUBLIC_SITE_URL` for the target environment.
-5. Run:
+4. Run:
 
 ```bash
 terraform -chdir=infra/terraform fmt -check -recursive
@@ -60,19 +59,17 @@ terraform -chdir=infra/terraform apply -var-file=environments/prod.tfvars
 - Terraform apply completes without errors
 - Resource group exists
 - Static Web App resource exists
-- Log Analytics workspace exists
 
 ### Short-term
 
 - `static_web_app_default_host_name` is returned in Terraform outputs
 - Static Web App URL responds over HTTPS
-- Application Insights resource is visible in Azure
 
 ### Medium-term
 
 - GitHub workflow validation remains green
-- deployment settings are ready for later app publishing
-- telemetry resources are reusable for future server-side hosting
+- deployment settings are ready for app publishing
+- preview environments behavior matches the selected plan and environment settings
 
 ## Rollback
 
@@ -87,8 +84,7 @@ For production, use a deliberate review before destroy. If only one resource is 
 ## Follow-up after first apply
 
 1. Save the Static Web App hostname.
-2. Set the production `NEXT_PUBLIC_SITE_URL`.
-3. Decide on remote Terraform state storage.
-4. Add Azure-authenticated plan/apply workflow when credentials are ready.
-5. Add custom domain and DNS when branding is ready.
-
+2. Decide on remote Terraform state storage.
+3. Add Azure-authenticated plan/apply workflow when credentials are ready.
+4. Add custom domain and DNS when branding is ready.
+5. Add monitoring only if the site later introduces server-side runtime behavior that needs it.

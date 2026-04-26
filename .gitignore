@@ -12,3 +12,5 @@ coverage
 .agents/
 skills-lock.json
 AGENTS.md
+
+infra/terraform/backend.hcl

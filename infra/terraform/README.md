@@ -1,26 +1,22 @@
 # Terraform Foundation
 
-This folder contains the first practical Azure infrastructure layer for the project.
+This folder contains the lean Azure infrastructure baseline for the project.
 
 ## Current scope
 
 The MVP infrastructure provisions:
 
 - Azure Resource Group
-- Azure Log Analytics Workspace
-- Azure Application Insights
 - Azure Static Web App
-- Azure Container Registry
-- Azure Kubernetes Service (AKS)
 
-This keeps the first release simple and fast while still aligning with the Azure-first platform direction from `AGENTS.md`.
+This keeps the first release cheap, reliable, and easy to operate while still aligning with the Azure-first platform direction from `AGENTS.md`.
 
 ## Why this shape
 
-- `Azure Static Web Apps` remains useful for lightweight static delivery and fallback hosting
-- `AKS` unlocks FluxCD, Prometheus, Grafana, Loki, and future platform expansion
-- `Log Analytics` and `Application Insights` establish an observability path early
-- the structure is intentionally easy to evolve later toward container hosting, AKS, Key Vault, and GitOps
+- `Azure Static Web Apps` fits a content-first MVP with minimal operational overhead
+- static assets are served through Azure's globally distributed edge, so an extra CDN layer is unnecessary for the first release
+- fewer resources means lower cost, smaller attack surface, and simpler maintenance
+- the structure remains easy to evolve later toward custom domains, monitoring, or alternate hosting if product requirements change
 
 ## Files
 
@@ -87,5 +83,5 @@ Reasonable follow-ups after this baseline:
 1. Add DNS and custom domain wiring
 2. Add remote state bootstrap resources
 3. Add staged `plan` and `apply` workflows
-4. Add Key Vault when secrets are introduced
-5. Revisit container hosting or AKS only when the application needs it
+4. Add monitoring only when the site actually needs runtime telemetry
+5. Revisit App Service, Container Apps, or AKS only when the application outgrows Static Web Apps
